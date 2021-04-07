@@ -6,6 +6,9 @@ import urllib.request
 import time
 import tensorflow_datasets as tfds
 import tensorflow as tf
+from config import *
+from preprocess import preprocess_sentence
+
 
 class PositionalEncoding(tf.keras.layers.Layer):
     def __init__(self, position, d_model):
@@ -52,6 +55,7 @@ plt.colorbar()
 plt.show()
 '''
 
+
 def scaled_dot_product_attention(query, key, value, mask):
     # query 크기 : (batch_size, num_heads, query의 문장 길이, d_model/num_heads)
     # key 크기 : (batch_size, num_heads, key의 문장 길이, d_model/num_heads)
@@ -79,6 +83,7 @@ def scaled_dot_product_attention(query, key, value, mask):
     output = tf.matmul(attention_weights, value)
 
     return output, attention_weights
+
 
 class MultiHeadAttention(tf.keras.layers.Layer):
 
@@ -146,10 +151,12 @@ class MultiHeadAttention(tf.keras.layers.Layer):
 
         return outputs
 
+
 def create_padding_mask(x):
     mask = tf.cast(tf.math.equal(x, 0), tf.float32)
     # (batch_size, 1, 1, key의 문장 길이)
     return mask[:, tf.newaxis, tf.newaxis, :]
+
 
 def encoder_layer(dff, d_model, num_heads, dropout, name="encoder_layer"):
     inputs = tf.keras.Input(shape=(None, d_model), name="inputs")
@@ -181,6 +188,7 @@ def encoder_layer(dff, d_model, num_heads, dropout, name="encoder_layer"):
     return tf.keras.Model(
         inputs=[inputs, padding_mask], outputs=outputs, name=name)
 
+
 def encoder(vocab_size, num_layers, dff,
             d_model, num_heads, dropout,
             name="encoder"):
@@ -204,12 +212,14 @@ def encoder(vocab_size, num_layers, dff,
     return tf.keras.Model(
         inputs=[inputs, padding_mask], outputs=outputs, name=name)
 
+
 # 디코더의 첫번째 서브층(sublayer)에서 미래 토큰을 Mask하는 함수
 def create_look_ahead_mask(x):
     seq_len = tf.shape(x)[1]
     look_ahead_mask = 1 - tf.linalg.band_part(tf.ones((seq_len, seq_len)), -1, 0)
     padding_mask = create_padding_mask(x) # 패딩 마스크도 포함
     return tf.maximum(look_ahead_mask, padding_mask)
+
 
 def decoder_layer(dff, d_model, num_heads, dropout, name="decoder_layer"):
     inputs = tf.keras.Input(shape=(None, d_model), name="inputs")
@@ -259,6 +269,7 @@ def decoder_layer(dff, d_model, num_heads, dropout, name="decoder_layer"):
         outputs=outputs,
         name=name)
 
+
 def decoder(vocab_size, num_layers, dff,
             d_model, num_heads, dropout,
             name='decoder'):
@@ -286,6 +297,7 @@ def decoder(vocab_size, num_layers, dff,
         inputs=[inputs, enc_outputs, look_ahead_mask, padding_mask],
         outputs=outputs,
         name=name)
+
 
 def transformer(vocab_size, num_layers, dff,
                 d_model, num_heads, dropout,
@@ -339,6 +351,7 @@ def transformer(vocab_size, num_layers, dff,
 # tf.keras.utils.plot_model(
 #     small_transformer, to_file='small_transformer.png', show_shapes=True)
 
+
 def loss_function(y_true, y_pred):
     y_true = tf.reshape(y_true, shape=(-1, MAX_LENGTH - 1))
 
@@ -349,6 +362,7 @@ def loss_function(y_true, y_pred):
     loss = tf.multiply(loss, mask)
 
     return tf.reduce_mean(loss)
+
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 
@@ -378,9 +392,10 @@ class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 # plt.xlabel("Train Step")
 # Text(0.5, 0, 'Train Step')
 
+# Load data
 # urllib.request.urlretrieve("https://raw.githubusercontent.com/songys/Chatbot_data/master/ChatbotData%20.csv", filename="ChatBotData.csv")
 
-train_data = pd.read_csv('./data/ChatBotData.csv')
+train_data = pd.read_csv(DATA_PATH + CHAT_BOT_DATA_FILE_NAME)
 
 questions = []
 for sentence in train_data['Q']:
@@ -404,7 +419,7 @@ print(answers[:5])
 # 서브워드텍스트인코더를 사용하여 질문, 답변 데이터로부터 단어 집합(Vocabulary) 생성
 tokenizer = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus(
     questions + answers, target_vocab_size=2**13)
-tokenizer.save_to_file('vocab_entire_data')
+tokenizer.save_to_file(VOCAB_FILE_NAME)
 
 # 시작 토큰과 종료 토큰에 대한 정수 부여.
 START_TOKEN, END_TOKEN = [tokenizer.vocab_size], [tokenizer.vocab_size + 1]
@@ -437,7 +452,7 @@ for ts in tokenized_string:
     print('{} ----> {}'.format(ts, tokenizer.decode([ts])))
 
 # 최대 길이를 40으로 정의
-MAX_LENGTH = 40
+
 
 # 토큰화 / 정수 인코딩 / 시작 토큰과 종료 토큰 추가 / 패딩
 def tokenize_and_filter(inputs, outputs):
@@ -457,12 +472,11 @@ def tokenize_and_filter(inputs, outputs):
 
     return tokenized_inputs, tokenized_outputs
 
+
 questions, answers = tokenize_and_filter(questions, answers)
 
 # 텐서플로우 dataset을 이용하여 셔플(shuffle)을 수행하되, 배치 크기로 데이터를 묶는다.
 # 또한 이 과정에서 교사 강요(teacher forcing)을 사용하기 위해서 디코더의 입력과 실제값 시퀀스를 구성한다.
-BATCH_SIZE = 64
-BUFFER_SIZE = 20000
 
 # 디코더의 실제값 시퀀스에서는 시작 토큰을 제거해야 한다.
 dataset = tf.data.Dataset.from_tensor_slices((
@@ -481,18 +495,13 @@ dataset = dataset.batch(BATCH_SIZE)
 dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
 # 임의의 샘플에 대해서 [:, :-1]과 [:, 1:]이 어떤 의미를 가지는지 테스트해본다.
-print(answers[0]) # 기존 샘플
-print(answers[:1][:, :-1]) # 마지막 패딩 토큰 제거하면서 길이가 39가 된다.
-print(answers[:1][:, 1:]) # 맨 처음 토큰이 제거된다. 다시 말해 시작 토큰이 제거된다. 길이는 역시 39가 된다.
+# print(answers[0]) # 기존 샘플
+# print(answers[:1][:, :-1]) # 마지막 패딩 토큰 제거하면서 길이가 39가 된다.
+# print(answers[:1][:, 1:]) # 맨 처음 토큰이 제거된다. 다시 말해 시작 토큰이 제거된다. 길이는 역시 39가 된다.
 
 tf.keras.backend.clear_session()
 
 # Hyper-parameters
-D_MODEL = 256
-NUM_LAYERS = 2
-NUM_HEADS = 8
-DFF = 512
-DROPOUT = 0.1
 
 model = transformer(
     vocab_size=VOCAB_SIZE,
@@ -507,15 +516,19 @@ learning_rate = CustomSchedule(D_MODEL)
 optimizer = tf.keras.optimizers.Adam(
     learning_rate, beta_1=0.9, beta_2=0.98, epsilon=1e-9)
 
+
 def accuracy(y_true, y_pred):
     # 레이블의 크기는 (batch_size, MAX_LENGTH - 1)
     y_true = tf.reshape(y_true, shape=(-1, MAX_LENGTH - 1))
     return tf.keras.metrics.sparse_categorical_accuracy(y_true, y_pred)
 
+
 model.compile(optimizer=optimizer, loss=loss_function, metrics=[accuracy])
 
-EPOCHS = 50
+# Epochs
+# Train the model
 model.fit(dataset, epochs=EPOCHS)
+
 
 def evaluate(sentence):
     sentence = preprocess_sentence(sentence)
@@ -542,6 +555,7 @@ def evaluate(sentence):
 
     return tf.squeeze(output, axis=0)
 
+
 def predict(sentence):
     prediction = evaluate(sentence)
     print("prediction: ", prediction)
@@ -554,13 +568,12 @@ def predict(sentence):
 
     return predicted_sentence
 
-def preprocess_sentence(sentence):
-    sentence = re.sub(r"([?.!,])", r" \1 ", sentence)
-    sentence = sentence.strip()
-    return sentence
 
 output = predict("가끔 궁금해")
 print(output)
+
+# Save the model
+model.save(MODEL_SAVE_PATH + MODEL_VERSION, include_optimizer=True)
 
 # sentence = "가끔 궁금해"
 # sentence = preprocess_sentence(sentence)
@@ -598,9 +611,7 @@ def serving_prediction(sentence, output):
     return {'outputs': tf.squeeze(output, axis=0)}
 '''
 
-model.save('./models/transformer/1.0', include_optimizer=True)
-
-# TODO: tried to define signature and use, but if break statement couldn't use.
+# TODO: tried to define signature and use, but 'if break statement' couldn't use.
 # tf.saved_model.save(model, './models/transformer/1', signatures=serving_prediction.get_concrete_function(
 #     sentence=tf.TensorSpec(shape=(1, None), dtype=tf.int32, name="inputs"),
 #     output=tf.TensorSpec(shape=(1, 1), dtype=tf.int32, name="dec_inputs")
