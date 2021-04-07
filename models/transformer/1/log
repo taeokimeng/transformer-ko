@@ -1,0 +1,162 @@
+/home/tokim/PyEnv/tf2.4/bin/python /home/tokim/code/transformer-ko/model.py
+2021-04-06 17:53:53.458794: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-04-06 17:53:53.458808: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+['12시 땡 !', '1지망 학교 떨어졌어', '3박4일 놀러가고 싶다', '3박4일 정도 놀러가고 싶다', 'PPL 심하네']
+['하루가 또 가네요 .', '위로해 드립니다 .', '여행은 언제나 좋죠 .', '여행은 언제나 좋죠 .', '눈살이 찌푸려지죠 .']
+시작 토큰 번호 : [8178]
+종료 토큰 번호 : [8179]
+단어 집합의 크기 : 8180
+임의의 질문 샘플을 정수 인코딩 : [7915, 4207, 3060, 41]
+정수 인코딩 후의 문장 [7915, 4207, 3060, 41]
+기존 문장: 12시 땡 !
+7915 ----> 12
+4207 ----> 시 
+3060 ----> 땡
+41 ---->  !
+2021-04-06 17:54:03.471228: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-04-06 17:54:03.471367: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-04-06 17:54:03.471377: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-04-06 17:54:03.471389: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (tokim-VirtualBox): /proc/driver/nvidia/version does not exist
+2021-04-06 17:54:03.471597: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-04-06 17:54:03.471810: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+[8178 3844   74 7894    1 8179    0    0    0    0    0    0    0    0
+    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+    0    0    0    0    0    0    0    0    0    0    0    0]
+[[8178 3844   74 7894    1 8179    0    0    0    0    0    0    0    0
+     0    0    0    0    0    0    0    0    0    0    0    0    0    0
+     0    0    0    0    0    0    0    0    0    0    0]]
+[[3844   74 7894    1 8179    0    0    0    0    0    0    0    0    0
+     0    0    0    0    0    0    0    0    0    0    0    0    0    0
+     0    0    0    0    0    0    0    0    0    0    0]]
+(1, 8180, 256)
+(1, 8180, 256)
+Epoch 1/50
+2021-04-06 17:54:08.264594: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-04-06 17:54:08.286552: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2592000000 Hz
+185/185 [==============================] - 136s 717ms/step - loss: 1.5142 - accuracy: 0.0141
+Epoch 2/50
+185/185 [==============================] - 137s 743ms/step - loss: 1.2426 - accuracy: 0.0495
+Epoch 3/50
+185/185 [==============================] - 131s 709ms/step - loss: 1.0262 - accuracy: 0.0502
+Epoch 4/50
+185/185 [==============================] - 144s 779ms/step - loss: 0.9355 - accuracy: 0.0537
+Epoch 5/50
+185/185 [==============================] - 137s 742ms/step - loss: 0.8731 - accuracy: 0.0568
+Epoch 6/50
+185/185 [==============================] - 132s 715ms/step - loss: 0.8138 - accuracy: 0.0606
+Epoch 7/50
+185/185 [==============================] - 135s 729ms/step - loss: 0.7583 - accuracy: 0.0662
+Epoch 8/50
+185/185 [==============================] - 132s 715ms/step - loss: 0.6811 - accuracy: 0.0740
+Epoch 9/50
+185/185 [==============================] - 132s 710ms/step - loss: 0.6051 - accuracy: 0.0838
+Epoch 10/50
+185/185 [==============================] - 125s 678ms/step - loss: 0.5157 - accuracy: 0.0930
+Epoch 11/50
+185/185 [==============================] - 131s 708ms/step - loss: 0.4311 - accuracy: 0.1035
+Epoch 12/50
+185/185 [==============================] - 128s 690ms/step - loss: 0.3465 - accuracy: 0.1153
+Epoch 13/50
+185/185 [==============================] - 129s 696ms/step - loss: 0.2724 - accuracy: 0.1279
+Epoch 14/50
+185/185 [==============================] - 129s 696ms/step - loss: 0.2028 - accuracy: 0.1376
+Epoch 15/50
+185/185 [==============================] - 133s 719ms/step - loss: 0.1448 - accuracy: 0.1478
+Epoch 16/50
+185/185 [==============================] - 123s 664ms/step - loss: 0.1019 - accuracy: 0.1558
+Epoch 17/50
+185/185 [==============================] - 131s 709ms/step - loss: 0.0711 - accuracy: 0.1610
+Epoch 18/50
+185/185 [==============================] - 130s 700ms/step - loss: 0.0534 - accuracy: 0.1639
+Epoch 19/50
+185/185 [==============================] - 129s 696ms/step - loss: 0.0432 - accuracy: 0.1661
+Epoch 20/50
+185/185 [==============================] - 132s 712ms/step - loss: 0.0385 - accuracy: 0.1664
+Epoch 21/50
+185/185 [==============================] - 131s 706ms/step - loss: 0.0379 - accuracy: 0.1662
+Epoch 22/50
+185/185 [==============================] - 127s 689ms/step - loss: 0.0344 - accuracy: 0.1656
+Epoch 23/50
+185/185 [==============================] - 123s 664ms/step - loss: 0.0309 - accuracy: 0.1681
+Epoch 24/50
+185/185 [==============================] - 121s 656ms/step - loss: 0.0284 - accuracy: 0.1682
+Epoch 25/50
+185/185 [==============================] - 128s 691ms/step - loss: 0.0245 - accuracy: 0.1691
+Epoch 26/50
+185/185 [==============================] - 128s 693ms/step - loss: 0.0214 - accuracy: 0.1699
+Epoch 27/50
+185/185 [==============================] - 126s 681ms/step - loss: 0.0189 - accuracy: 0.1700
+Epoch 28/50
+185/185 [==============================] - 128s 696ms/step - loss: 0.0180 - accuracy: 0.1703
+Epoch 29/50
+185/185 [==============================] - 131s 706ms/step - loss: 0.0172 - accuracy: 0.1701
+Epoch 30/50
+185/185 [==============================] - 123s 668ms/step - loss: 0.0146 - accuracy: 0.1710
+Epoch 31/50
+185/185 [==============================] - 128s 691ms/step - loss: 0.0142 - accuracy: 0.1721
+Epoch 32/50
+185/185 [==============================] - 127s 687ms/step - loss: 0.0124 - accuracy: 0.1717
+Epoch 33/50
+185/185 [==============================] - 125s 678ms/step - loss: 0.0122 - accuracy: 0.1722
+Epoch 34/50
+185/185 [==============================] - 132s 715ms/step - loss: 0.0113 - accuracy: 0.1720
+Epoch 35/50
+185/185 [==============================] - 125s 678ms/step - loss: 0.0101 - accuracy: 0.1723
+Epoch 36/50
+185/185 [==============================] - 133s 715ms/step - loss: 0.0103 - accuracy: 0.1726
+Epoch 37/50
+185/185 [==============================] - 132s 710ms/step - loss: 0.0098 - accuracy: 0.1728
+Epoch 38/50
+185/185 [==============================] - 130s 699ms/step - loss: 0.0088 - accuracy: 0.1738
+Epoch 39/50
+185/185 [==============================] - 125s 674ms/step - loss: 0.0077 - accuracy: 0.1738
+Epoch 40/50
+185/185 [==============================] - 123s 664ms/step - loss: 0.0080 - accuracy: 0.1731
+Epoch 41/50
+185/185 [==============================] - 125s 676ms/step - loss: 0.0071 - accuracy: 0.1734
+Epoch 42/50
+185/185 [==============================] - 127s 685ms/step - loss: 0.0072 - accuracy: 0.1731
+Epoch 43/50
+185/185 [==============================] - 125s 676ms/step - loss: 0.0068 - accuracy: 0.1732
+Epoch 44/50
+185/185 [==============================] - 129s 698ms/step - loss: 0.0071 - accuracy: 0.1725
+Epoch 45/50
+185/185 [==============================] - 130s 704ms/step - loss: 0.0070 - accuracy: 0.1734
+Epoch 46/50
+185/185 [==============================] - 130s 704ms/step - loss: 0.0057 - accuracy: 0.1734
+Epoch 47/50
+185/185 [==============================] - 128s 690ms/step - loss: 0.0055 - accuracy: 0.1741
+Epoch 48/50
+185/185 [==============================] - 130s 701ms/step - loss: 0.0057 - accuracy: 0.1731
+Epoch 49/50
+185/185 [==============================] - 128s 692ms/step - loss: 0.0049 - accuracy: 0.1744
+Epoch 50/50
+185/185 [==============================] - 124s 669ms/step - loss: 0.0051 - accuracy: 0.1738
+prediction:  tf.Tensor([8178   63  516  138    3    1], shape=(6,), dtype=int32)
+Input: 가끔 궁금해
+Output: 그 사람도 그럴 거예요 .
+그 사람도 그럴 거예요 .
+2021-04-06 19:41:48.184470: W tensorflow/python/util/util.cc:348] Sets are not currently considered sequences, but this may change in the future, so consider avoiding using them.
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, dense_1_layer_call_fn, dense_1_layer_call_and_return_conditional_losses, dense_2_layer_call_fn while saving (showing 5 of 120). These functions will not be directly callable after loading.
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, dense_1_layer_call_fn, dense_1_layer_call_and_return_conditional_losses, dense_2_layer_call_fn while saving (showing 5 of 120). These functions will not be directly callable after loading.
+
+Process finished with exit code 0
+
+Configurations (config.py)
+# Sentence max length
+MAX_LENGTH = 40
+
+# Batch
+BATCH_SIZE = 64
+BUFFER_SIZE = 20000
+
+# Hyper parameters
+D_MODEL = 256
+NUM_LAYERS = 2
+NUM_HEADS = 8
+DFF = 512
+DROPOUT = 0.1
+
+# Epochs
+EPOCHS = 50
