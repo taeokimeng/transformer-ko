@@ -5,13 +5,17 @@ Transformer for Korean Chatbot has been trained [chatbot data](https://github.co
 
 ## Use the chatbot with TensorFlow Serving
 
-1. Run TensorFlow Serving
+1. Run TensorFlow Serving (Change the directory to transformer-ko before running)
 
-``` serving_run.sh ```
+~~~
+./serving_run.sh
+~~~
 
 2. Run serving.py and input a sentence
 
-``` python serving.py -i "어떤 영화 볼까요?" ```
+~~~
+python serving.py -i "어떤 영화 볼까요?"
+~~~
 
 3. Check the answer from the chatbot
 
