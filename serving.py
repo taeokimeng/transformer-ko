@@ -67,8 +67,8 @@ def request_prediction(sentence, output, version):
 
 prediction = request_prediction(sentence, output, model_version)
 print("Prediction: ", prediction)
-predicted_sentence = tokenizer.decode([i for i in prediction if i < tokenizer.vocab_size])
-print('Output: {}'.format(predicted_sentence))
+decoded_prediction = tokenizer.decode([i for i in prediction if i < tokenizer.vocab_size])
+print('Decoded prediction: {}'.format(decoded_prediction))
 
 
 def punctuate(sentence):
@@ -84,8 +84,8 @@ def punctuate(sentence):
     return sentence
 
 
-predicted_sentence = punctuate(predicted_sentence)
-print(predicted_sentence)
+predicted_sentence = punctuate(decoded_prediction)
+print("Output: {}".format(predicted_sentence))
 
 # TODO: use defined signature
 '''
